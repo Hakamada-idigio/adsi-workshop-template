@@ -7,7 +7,6 @@ import com.example.attendance.attendance.service.AttendanceService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +21,10 @@ public class AttendanceController {
 
     public AttendanceController(AttendanceService attendanceService) {
         this.attendanceService = attendanceService;
+    }
+
+    private Long getEmployeeId() {
+        return (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     @PostMapping("/clock-in")
@@ -50,10 +53,5 @@ public class AttendanceController {
     public ResponseEntity<Void> submitMonthly(@Valid @RequestBody MonthlySubmitRequest request) {
         attendanceService.submitMonthly(getEmployeeId(), request.yearMonth());
         return ResponseEntity.noContent().build();
-    }
-
-    private Long getEmployeeId() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return (Long) auth.getPrincipal();
     }
 }

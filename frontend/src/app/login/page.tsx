@@ -51,6 +51,47 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center relative overflow-hidden">
+      {/* Tiger Background */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" fill="none" className="w-[600px] h-[600px]">
+          <circle cx="400" cy="400" r="350" fill="#FFF3E0" opacity="0.3"/>
+          <ellipse cx="400" cy="520" rx="180" ry="140" fill="#F57C00"/>
+          <ellipse cx="400" cy="300" rx="150" ry="130" fill="#FF9800"/>
+          <ellipse cx="300" cy="200" rx="40" ry="45" fill="#FF9800"/>
+          <ellipse cx="300" cy="200" rx="25" ry="30" fill="#FFE0B2"/>
+          <ellipse cx="500" cy="200" rx="40" ry="45" fill="#FF9800"/>
+          <ellipse cx="500" cy="200" rx="25" ry="30" fill="#FFE0B2"/>
+          <ellipse cx="400" cy="330" rx="90" ry="80" fill="#FFF8E1"/>
+          <ellipse cx="355" cy="285" rx="25" ry="22" fill="white"/>
+          <ellipse cx="445" cy="285" rx="25" ry="22" fill="white"/>
+          <circle cx="358" cy="288" r="12" fill="#33691E"/>
+          <circle cx="448" cy="288" r="12" fill="#33691E"/>
+          <circle cx="361" cy="285" r="5" fill="black"/>
+          <circle cx="451" cy="285" r="5" fill="black"/>
+          <circle cx="363" cy="282" r="2.5" fill="white"/>
+          <circle cx="453" cy="282" r="2.5" fill="white"/>
+          <ellipse cx="400" cy="332" rx="12" ry="8" fill="#BF360C"/>
+          <path d="M400 340 Q390 360 380 355" stroke="#5D4037" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+          <path d="M400 340 Q410 360 420 355" stroke="#5D4037" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+          <line x1="320" y1="320" x2="280" y2="310" stroke="#5D4037" strokeWidth="1.5" opacity="0.6"/>
+          <line x1="320" y1="335" x2="275" y2="340" stroke="#5D4037" strokeWidth="1.5" opacity="0.6"/>
+          <line x1="480" y1="320" x2="520" y2="310" stroke="#5D4037" strokeWidth="1.5" opacity="0.6"/>
+          <line x1="480" y1="335" x2="525" y2="340" stroke="#5D4037" strokeWidth="1.5" opacity="0.6"/>
+          <path d="M370 230 Q380 250 375 270" stroke="#BF360C" strokeWidth="6" fill="none" strokeLinecap="round"/>
+          <path d="M395 220 Q400 245 398 265" stroke="#BF360C" strokeWidth="6" fill="none" strokeLinecap="round"/>
+          <path d="M425 230 Q420 250 422 270" stroke="#BF360C" strokeWidth="6" fill="none" strokeLinecap="round"/>
+          <path d="M310 270 Q320 290 315 310" stroke="#BF360C" strokeWidth="5" fill="none" strokeLinecap="round"/>
+          <path d="M490 270 Q480 290 485 310" stroke="#BF360C" strokeWidth="5" fill="none" strokeLinecap="round"/>
+          <ellipse cx="340" cy="640" rx="35" ry="25" fill="#FF9800"/>
+          <ellipse cx="460" cy="640" rx="35" ry="25" fill="#FF9800"/>
+          <ellipse cx="340" cy="645" rx="25" ry="15" fill="#FFE0B2"/>
+          <ellipse cx="460" cy="645" rx="25" ry="15" fill="#FFE0B2"/>
+          <path d="M560 500 Q620 480 630 420 Q640 360 600 380" stroke="#FF9800" strokeWidth="20" fill="none" strokeLinecap="round"/>
+          <path d="M300 470 Q320 490 310 520" stroke="#BF360C" strokeWidth="7" fill="none" strokeLinecap="round"/>
+          <path d="M500 470 Q480 490 490 520" stroke="#BF360C" strokeWidth="7" fill="none" strokeLinecap="round"/>
+        </svg>
+      </div>
+
       {/* Floating Animals Background */}
       {animals.map((animal, i) => (
         <span

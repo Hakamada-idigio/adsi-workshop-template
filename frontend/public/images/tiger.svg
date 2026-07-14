@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" fill="none">
+  <!-- Background circle -->
+  <circle cx="400" cy="400" r="350" fill="#FFF3E0" opacity="0.3"/>
+
+  <!-- Body -->
+  <ellipse cx="400" cy="520" rx="180" ry="140" fill="#F57C00"/>
+  <ellipse cx="400" cy="520" rx="180" ry="140" fill="url(#tigerStripes)" opacity="0.6"/>
+
+  <!-- Head -->
+  <ellipse cx="400" cy="300" rx="150" ry="130" fill="#FF9800"/>
+
+  <!-- Ears -->
+  <ellipse cx="300" cy="200" rx="40" ry="45" fill="#FF9800"/>
+  <ellipse cx="300" cy="200" rx="25" ry="30" fill="#FFE0B2"/>
+  <ellipse cx="500" cy="200" rx="40" ry="45" fill="#FF9800"/>
+  <ellipse cx="500" cy="200" rx="25" ry="30" fill="#FFE0B2"/>
+
+  <!-- Face white area -->
+  <ellipse cx="400" cy="330" rx="90" ry="80" fill="#FFF8E1"/>
+
+  <!-- Eyes -->
+  <ellipse cx="355" cy="285" rx="25" ry="22" fill="white"/>
+  <ellipse cx="445" cy="285" rx="25" ry="22" fill="white"/>
+  <circle cx="358" cy="288" r="12" fill="#33691E"/>
+  <circle cx="448" cy="288" r="12" fill="#33691E"/>
+  <circle cx="361" cy="285" r="5" fill="black"/>
+  <circle cx="451" cy="285" r="5" fill="black"/>
+  <circle cx="363" cy="282" r="2.5" fill="white"/>
+  <circle cx="453" cy="282" r="2.5" fill="white"/>
+
+  <!-- Nose -->
+  <path d="M390 330 L410 330 L400 345 Z" fill="#E65100"/>
+  <ellipse cx="400" cy="332" rx="12" ry="8" fill="#BF360C"/>
+
+  <!-- Mouth -->
+  <path d="M400 340 Q390 360 380 355" stroke="#5D4037" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M400 340 Q410 360 420 355" stroke="#5D4037" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Whiskers -->
+  <line x1="320" y1="320" x2="280" y2="310" stroke="#5D4037" stroke-width="1.5" opacity="0.6"/>
+  <line x1="320" y1="335" x2="275" y2="340" stroke="#5D4037" stroke-width="1.5" opacity="0.6"/>
+  <line x1="320" y1="350" x2="280" y2="365" stroke="#5D4037" stroke-width="1.5" opacity="0.6"/>
+  <line x1="480" y1="320" x2="520" y2="310" stroke="#5D4037" stroke-width="1.5" opacity="0.6"/>
+  <line x1="480" y1="335" x2="525" y2="340" stroke="#5D4037" stroke-width="1.5" opacity="0.6"/>
+  <line x1="480" y1="350" x2="520" y2="365" stroke="#5D4037" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Forehead stripes -->
+  <path d="M370 230 Q380 250 375 270" stroke="#BF360C" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M395 220 Q400 245 398 265" stroke="#BF360C" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M425 230 Q420 250 422 270" stroke="#BF360C" stroke-width="6" fill="none" stroke-linecap="round"/>
+
+  <!-- Cheek stripes -->
+  <path d="M310 270 Q320 290 315 310" stroke="#BF360C" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M290 285 Q300 305 295 320" stroke="#BF360C" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M490 270 Q480 290 485 310" stroke="#BF360C" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M510 285 Q500 305 505 320" stroke="#BF360C" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+  <!-- Front paws -->
+  <ellipse cx="340" cy="640" rx="35" ry="25" fill="#FF9800"/>
+  <ellipse cx="460" cy="640" rx="35" ry="25" fill="#FF9800"/>
+  <ellipse cx="340" cy="645" rx="25" ry="15" fill="#FFE0B2"/>
+  <ellipse cx="460" cy="645" rx="25" ry="15" fill="#FFE0B2"/>
+
+  <!-- Tail -->
+  <path d="M560 500 Q620 480 630 420 Q640 360 600 380" stroke="#FF9800" stroke-width="20" fill="none" stroke-linecap="round"/>
+  <path d="M580 490 Q620 475 625 430" stroke="#BF360C" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M600 460 Q625 440 620 400" stroke="#BF360C" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <circle cx="600" cy="378" r="15" fill="#FF9800"/>
+
+  <!-- Body stripes -->
+  <path d="M300 470 Q320 490 310 520" stroke="#BF360C" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <path d="M280 500 Q300 520 290 550" stroke="#BF360C" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M500 470 Q480 490 490 520" stroke="#BF360C" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <path d="M520 500 Q500 520 510 550" stroke="#BF360C" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M350 460 Q360 480 355 500" stroke="#BF360C" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M450 460 Q440 480 445 500" stroke="#BF360C" stroke-width="5" fill="none" stroke-linecap="round"/>
+
+  <!-- Stripe pattern definition -->
+  <defs>
+    <pattern id="tigerStripes" patternUnits="userSpaceOnUse" width="40" height="40" patternTransform="rotate(15)">
+      <rect width="40" height="40" fill="transparent"/>
+      <path d="M0 20 Q10 15 20 20 Q30 25 40 20" stroke="#BF360C" stroke-width="3" fill="none"/>
+    </pattern>
+  </defs>
+</svg>

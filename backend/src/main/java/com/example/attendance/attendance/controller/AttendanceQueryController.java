@@ -7,7 +7,6 @@ import com.example.attendance.attendance.dto.MonthlyAttendanceResponse;
 import com.example.attendance.attendance.service.AttendanceQueryService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +26,10 @@ public class AttendanceQueryController {
 
     public AttendanceQueryController(AttendanceQueryService attendanceQueryService) {
         this.attendanceQueryService = attendanceQueryService;
+    }
+
+    private Long getEmployeeId() {
+        return (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     @GetMapping("/daily")
@@ -49,10 +52,5 @@ public class AttendanceQueryController {
             @PathVariable Long id,
             @Valid @RequestBody CorrectionRequest request) {
         return ResponseEntity.ok(attendanceQueryService.correctAttendance(getEmployeeId(), id, request));
-    }
-
-    private Long getEmployeeId() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return (Long) auth.getPrincipal();
     }
 }

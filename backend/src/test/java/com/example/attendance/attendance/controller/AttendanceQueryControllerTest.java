@@ -74,8 +74,7 @@ class AttendanceQueryControllerTest {
         when(attendanceQueryService.getDailyAttendance(EMPLOYEE_ID, LocalDate.of(2026, 7, 14)))
                 .thenReturn(detail);
 
-        mockMvc.perform(get("/attendance/daily")
-                        .param("date", "2026-07-14"))
+        mockMvc.perform(get("/attendance/daily").param("date", "2026-07-14"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.record.totalWorkingMinutes").value(480))
                 .andExpect(jsonPath("$.canEdit").value(true));
@@ -90,8 +89,7 @@ class AttendanceQueryControllerTest {
         when(attendanceQueryService.getMonthlyAttendance(EMPLOYEE_ID, "2026-07", 0, 31))
                 .thenReturn(monthly);
 
-        mockMvc.perform(get("/attendance/monthly")
-                        .param("yearMonth", "2026-07"))
+        mockMvc.perform(get("/attendance/monthly").param("yearMonth", "2026-07"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.yearMonth").value("2026-07"))
                 .andExpect(jsonPath("$.requiredMinutes").value(10005))

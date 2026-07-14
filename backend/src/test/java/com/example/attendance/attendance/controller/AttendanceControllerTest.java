@@ -7,6 +7,7 @@ import com.example.attendance.auth.security.JwtAuthenticationFilter;
 import com.example.attendance.auth.security.JwtTokenProvider;
 import com.example.attendance.common.exception.BusinessException;
 import com.example.attendance.common.exception.ConflictException;
+import com.example.attendance.domain.model.AttendanceStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,8 +25,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import com.example.attendance.domain.model.AttendanceStatus;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
