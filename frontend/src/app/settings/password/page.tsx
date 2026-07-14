@@ -1,24 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { isAuthenticated } from "@/lib/auth";
-import { withBasePath } from "@/lib/api-client";
+import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { apiFetch } from "@/lib/api-client";
 
 export default function PasswordPage() {
-  const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (!isAuthenticated()) {
-      router.push(withBasePath("/login"));
-    }
-  }, [router]);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage(null);
 
@@ -32,11 +26,24 @@ export default function PasswordPage() {
       return;
     }
 
-    setMessage({ type: "success", text: "パスワードを変更しました!" });
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
+    setLoading(true);
+    try {
+      await apiFetch("/auth/password", {
+        method: "PUT",
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+      setMessage({ type: "success", text: "パスワードを変更しました!" });
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (err) {
+      setMessage({ type: "error", text: err instanceof Error ? err.message : "変更に失敗しました" });
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (authLoading || !user) return null;
 
   return (
     <div className="max-w-md mx-auto space-y-6">
@@ -97,8 +104,8 @@ export default function PasswordPage() {
           </div>
         )}
 
-        <button type="submit" className="btn-primary w-full">
-          変更する
+        <button type="submit" disabled={loading} className="btn-primary w-full">
+          {loading ? "変更中..." : "変更する"}
         </button>
       </form>
     </div>
