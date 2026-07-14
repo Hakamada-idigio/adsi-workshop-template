@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { apiFetch } from "@/lib/api-client";
+import { apiFetch, withBasePath } from "@/lib/api-client";
 import { LoginResponse, setToken, setStoredUser } from "@/lib/auth";
 
 const animals = [
@@ -25,7 +24,6 @@ const animals = [
 ];
 
 export default function LoginPage() {
-  const router = useRouter();
   const [employeeNumber, setEmployeeNumber] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -43,7 +41,7 @@ export default function LoginPage() {
       });
       setToken(data.token);
       setStoredUser(data.employeeName, data.role);
-      router.push("/");
+      window.location.href = withBasePath("/");
     } catch (err) {
       setError(err instanceof Error ? err.message : "ログインに失敗しました");
     } finally {

@@ -1,12 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { clearAuth, getStoredUser } from "@/lib/auth";
 import { withBasePath } from "@/lib/api-client";
 import { useEffect, useState } from "react";
 
 export default function NavBar() {
-  const router = useRouter();
   const [user, setUser] = useState<{ name: string; role: string } | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -16,7 +14,7 @@ export default function NavBar() {
 
   const handleLogout = () => {
     clearAuth();
-    router.push(withBasePath("/login"));
+    window.location.href = withBasePath("/login");
   };
 
   return (
