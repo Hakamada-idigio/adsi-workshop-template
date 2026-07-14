@@ -7,6 +7,7 @@ import com.example.attendance.auth.security.JwtAuthenticationFilter;
 import com.example.attendance.auth.security.JwtTokenProvider;
 import com.example.attendance.common.exception.BusinessException;
 import com.example.attendance.common.exception.ConflictException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -48,6 +51,13 @@ class AttendanceControllerTest {
 
     private static final Long EMPLOYEE_ID = 1L;
 
+    @BeforeEach
+    void setUp() {
+        var auth = new UsernamePasswordAuthenticationToken(
+                EMPLOYEE_ID, "EMP001", List.of(new SimpleGrantedAuthority("ROLE_USER")));
+        SecurityContextHolder.getContext().setAuthentication(auth);
+    }
+
     @Test
     @DisplayName("POST /attendance/clock-in: 成功時201を返す")
     void clockIn_success_returns201() throws Exception {
@@ -56,8 +66,7 @@ class AttendanceControllerTest {
                 null, AttendanceStatus.DRAFT, List.of(), null);
         when(attendanceService.clockIn(EMPLOYEE_ID)).thenReturn(response);
 
-        mockMvc.perform(post("/attendance/clock-in")
-                        .header("X-Employee-Id", EMPLOYEE_ID))
+        mockMvc.perform(post("/attendance/clock-in"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.status").value("DRAFT"));
@@ -69,8 +78,7 @@ class AttendanceControllerTest {
         when(attendanceService.clockIn(EMPLOYEE_ID))
                 .thenThrow(new ConflictException("既に出勤済みです"));
 
-        mockMvc.perform(post("/attendance/clock-in")
-                        .header("X-Employee-Id", EMPLOYEE_ID))
+        mockMvc.perform(post("/attendance/clock-in"))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.error").value("CONFLICT"));
     }
@@ -84,8 +92,7 @@ class AttendanceControllerTest {
                 AttendanceStatus.DRAFT, List.of(), 480);
         when(attendanceService.clockOut(EMPLOYEE_ID)).thenReturn(response);
 
-        mockMvc.perform(post("/attendance/clock-out")
-                        .header("X-Employee-Id", EMPLOYEE_ID))
+        mockMvc.perform(post("/attendance/clock-out"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.clockOut").isNotEmpty())
                 .andExpect(jsonPath("$.totalWorkingMinutes").value(480));
@@ -97,8 +104,7 @@ class AttendanceControllerTest {
         when(attendanceService.clockOut(EMPLOYEE_ID))
                 .thenThrow(new BusinessException("出勤打刻がありません"));
 
-        mockMvc.perform(post("/attendance/clock-out")
-                        .header("X-Employee-Id", EMPLOYEE_ID))
+        mockMvc.perform(post("/attendance/clock-out"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").value("BAD_REQUEST"));
     }
@@ -109,8 +115,7 @@ class AttendanceControllerTest {
         var response = new BreakRecordResponse(10L, LocalDateTime.now(), null, null);
         when(attendanceService.startBreak(EMPLOYEE_ID)).thenReturn(response);
 
-        mockMvc.perform(post("/attendance/break/start")
-                        .header("X-Employee-Id", EMPLOYEE_ID))
+        mockMvc.perform(post("/attendance/break/start"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(10));
     }
@@ -121,8 +126,7 @@ class AttendanceControllerTest {
         when(attendanceService.startBreak(EMPLOYEE_ID))
                 .thenThrow(new BusinessException("出勤打刻がありません"));
 
-        mockMvc.perform(post("/attendance/break/start")
-                        .header("X-Employee-Id", EMPLOYEE_ID))
+        mockMvc.perform(post("/attendance/break/start"))
                 .andExpect(status().isBadRequest());
     }
 
@@ -132,8 +136,7 @@ class AttendanceControllerTest {
         when(attendanceService.startBreak(EMPLOYEE_ID))
                 .thenThrow(new BusinessException("既に休憩中です"));
 
-        mockMvc.perform(post("/attendance/break/start")
-                        .header("X-Employee-Id", EMPLOYEE_ID))
+        mockMvc.perform(post("/attendance/break/start"))
                 .andExpect(status().isBadRequest());
     }
 
@@ -144,8 +147,7 @@ class AttendanceControllerTest {
                 LocalDateTime.now(), 30);
         when(attendanceService.endBreak(EMPLOYEE_ID)).thenReturn(response);
 
-        mockMvc.perform(post("/attendance/break/end")
-                        .header("X-Employee-Id", EMPLOYEE_ID))
+        mockMvc.perform(post("/attendance/break/end"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.durationMinutes").value(30));
     }
@@ -156,8 +158,7 @@ class AttendanceControllerTest {
         when(attendanceService.endBreak(EMPLOYEE_ID))
                 .thenThrow(new BusinessException("休憩中ではありません"));
 
-        mockMvc.perform(post("/attendance/break/end")
-                        .header("X-Employee-Id", EMPLOYEE_ID))
+        mockMvc.perform(post("/attendance/break/end"))
                 .andExpect(status().isBadRequest());
     }
 
@@ -165,7 +166,6 @@ class AttendanceControllerTest {
     @DisplayName("POST /attendance/submit: 成功時204を返す")
     void submitMonthly_success_returns204() throws Exception {
         mockMvc.perform(post("/attendance/submit")
-                        .header("X-Employee-Id", EMPLOYEE_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"yearMonth\":\"2026-07\"}"))
                 .andExpect(status().isNoContent());

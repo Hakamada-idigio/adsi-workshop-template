@@ -7,11 +7,12 @@ import com.example.attendance.attendance.dto.MonthlyAttendanceResponse;
 import com.example.attendance.attendance.service.AttendanceQueryService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,26 +31,28 @@ public class AttendanceQueryController {
 
     @GetMapping("/daily")
     public ResponseEntity<AttendanceDetailResponse> getDailyAttendance(
-            @RequestHeader("X-Employee-Id") Long employeeId,
             @RequestParam(required = false) LocalDate date) {
         LocalDate targetDate = date != null ? date : LocalDate.now();
-        return ResponseEntity.ok(attendanceQueryService.getDailyAttendance(employeeId, targetDate));
+        return ResponseEntity.ok(attendanceQueryService.getDailyAttendance(getEmployeeId(), targetDate));
     }
 
     @GetMapping("/monthly")
     public ResponseEntity<MonthlyAttendanceResponse> getMonthlyAttendance(
-            @RequestHeader("X-Employee-Id") Long employeeId,
             @RequestParam String yearMonth,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "31") int size) {
-        return ResponseEntity.ok(attendanceQueryService.getMonthlyAttendance(employeeId, yearMonth, page, size));
+        return ResponseEntity.ok(attendanceQueryService.getMonthlyAttendance(getEmployeeId(), yearMonth, page, size));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<AttendanceRecordResponse> correctAttendance(
-            @RequestHeader("X-Employee-Id") Long employeeId,
             @PathVariable Long id,
             @Valid @RequestBody CorrectionRequest request) {
-        return ResponseEntity.ok(attendanceQueryService.correctAttendance(employeeId, id, request));
+        return ResponseEntity.ok(attendanceQueryService.correctAttendance(getEmployeeId(), id, request));
+    }
+
+    private Long getEmployeeId() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return (Long) auth.getPrincipal();
     }
 }

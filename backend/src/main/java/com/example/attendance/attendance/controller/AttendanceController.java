@@ -7,9 +7,10 @@ import com.example.attendance.attendance.service.AttendanceService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,36 +25,35 @@ public class AttendanceController {
     }
 
     @PostMapping("/clock-in")
-    public ResponseEntity<AttendanceRecordResponse> clockIn(
-            @RequestHeader("X-Employee-Id") Long employeeId) {
-        AttendanceRecordResponse response = attendanceService.clockIn(employeeId);
+    public ResponseEntity<AttendanceRecordResponse> clockIn() {
+        AttendanceRecordResponse response = attendanceService.clockIn(getEmployeeId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/clock-out")
-    public ResponseEntity<AttendanceRecordResponse> clockOut(
-            @RequestHeader("X-Employee-Id") Long employeeId) {
-        return ResponseEntity.ok(attendanceService.clockOut(employeeId));
+    public ResponseEntity<AttendanceRecordResponse> clockOut() {
+        return ResponseEntity.ok(attendanceService.clockOut(getEmployeeId()));
     }
 
     @PostMapping("/break/start")
-    public ResponseEntity<BreakRecordResponse> startBreak(
-            @RequestHeader("X-Employee-Id") Long employeeId) {
-        BreakRecordResponse response = attendanceService.startBreak(employeeId);
+    public ResponseEntity<BreakRecordResponse> startBreak() {
+        BreakRecordResponse response = attendanceService.startBreak(getEmployeeId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/break/end")
-    public ResponseEntity<BreakRecordResponse> endBreak(
-            @RequestHeader("X-Employee-Id") Long employeeId) {
-        return ResponseEntity.ok(attendanceService.endBreak(employeeId));
+    public ResponseEntity<BreakRecordResponse> endBreak() {
+        return ResponseEntity.ok(attendanceService.endBreak(getEmployeeId()));
     }
 
     @PostMapping("/submit")
-    public ResponseEntity<Void> submitMonthly(
-            @RequestHeader("X-Employee-Id") Long employeeId,
-            @Valid @RequestBody MonthlySubmitRequest request) {
-        attendanceService.submitMonthly(employeeId, request.yearMonth());
+    public ResponseEntity<Void> submitMonthly(@Valid @RequestBody MonthlySubmitRequest request) {
+        attendanceService.submitMonthly(getEmployeeId(), request.yearMonth());
         return ResponseEntity.noContent().build();
+    }
+
+    private Long getEmployeeId() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return (Long) auth.getPrincipal();
     }
 }

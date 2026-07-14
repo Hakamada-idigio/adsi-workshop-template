@@ -9,6 +9,7 @@ import com.example.attendance.auth.security.JwtAuthenticationFilter;
 import com.example.attendance.auth.security.JwtTokenProvider;
 import com.example.attendance.common.exception.ForbiddenException;
 import com.example.attendance.domain.model.AttendanceStatus;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -50,6 +54,13 @@ class AttendanceQueryControllerTest {
 
     private static final Long EMPLOYEE_ID = 1L;
 
+    @BeforeEach
+    void setUp() {
+        var auth = new UsernamePasswordAuthenticationToken(
+                EMPLOYEE_ID, "EMP001", List.of(new SimpleGrantedAuthority("ROLE_USER")));
+        SecurityContextHolder.getContext().setAuthentication(auth);
+    }
+
     @Test
     @DisplayName("GET /attendance/daily: 日別勤怠を取得できる")
     void getDailyAttendance_returns200() throws Exception {
@@ -64,7 +75,6 @@ class AttendanceQueryControllerTest {
                 .thenReturn(detail);
 
         mockMvc.perform(get("/attendance/daily")
-                        .header("X-Employee-Id", EMPLOYEE_ID)
                         .param("date", "2026-07-14"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.record.totalWorkingMinutes").value(480))
@@ -81,7 +91,6 @@ class AttendanceQueryControllerTest {
                 .thenReturn(monthly);
 
         mockMvc.perform(get("/attendance/monthly")
-                        .header("X-Employee-Id", EMPLOYEE_ID)
                         .param("yearMonth", "2026-07"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.yearMonth").value("2026-07"))
@@ -102,7 +111,6 @@ class AttendanceQueryControllerTest {
                 .thenReturn(response);
 
         mockMvc.perform(put("/attendance/1")
-                        .header("X-Employee-Id", EMPLOYEE_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"clockIn\":\"2026-07-14T08:50:00\",\"reason\":\"打刻忘れ修正\"}"))
                 .andExpect(status().isOk())
@@ -116,7 +124,6 @@ class AttendanceQueryControllerTest {
                 .thenThrow(new ForbiddenException("承認済みの勤怠は直接修正できません"));
 
         mockMvc.perform(put("/attendance/1")
-                        .header("X-Employee-Id", EMPLOYEE_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"clockIn\":\"2026-07-14T08:50:00\",\"reason\":\"修正理由\"}"))
                 .andExpect(status().isForbidden())
@@ -127,7 +134,6 @@ class AttendanceQueryControllerTest {
     @DisplayName("PUT /attendance/{id}: 理由なしで400を返す")
     void correctAttendance_noReason_returns400() throws Exception {
         mockMvc.perform(put("/attendance/1")
-                        .header("X-Employee-Id", EMPLOYEE_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"clockIn\":\"2026-07-14T08:50:00\",\"reason\":\"\"}"))
                 .andExpect(status().isBadRequest());
