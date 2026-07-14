@@ -7,12 +7,14 @@ const nextConfig = {
   assetPrefix: basePath || undefined,
   skipTrailingSlashRedirect: isSagemaker,
   async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: "http://localhost:8080/api/:path*",
-      },
-    ];
+    return {
+      beforeFiles: [
+        {
+          source: "/api/:path*",
+          destination: "http://localhost:8080/api/:path*",
+        },
+      ],
+    };
   },
 };
 

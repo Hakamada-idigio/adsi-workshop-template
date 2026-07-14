@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { apiFetch, withBasePath } from "@/lib/api-client";
+import { apiFetch } from "@/lib/api-client";
 import { LoginResponse, setToken, setStoredUser } from "@/lib/auth";
 
 export default function LoginPage() {
@@ -24,7 +24,7 @@ export default function LoginPage() {
       });
       setToken(data.token);
       setStoredUser(data.employeeName, data.role);
-      router.push(withBasePath("/"));
+      router.push("/");
     } catch (err) {
       setError(err instanceof Error ? err.message : "ログインに失敗しました");
     } finally {
@@ -83,7 +83,7 @@ export default function LoginPage() {
             disabled={loading}
             className="btn-primary w-full text-lg"
           >
-            {loading ? "ログイン中..." : "ログイン &#x1F680;"}
+            {loading ? "ログイン中..." : "ログイン 🚀"}
           </button>
         </form>
       </div>
