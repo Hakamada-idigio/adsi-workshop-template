@@ -13,6 +13,7 @@
 - **US-001**: 社員として、出勤ボタンを押して出勤時刻を記録したい
 - **US-002**: 社員として、退勤ボタンを押して退勤時刻を記録したい
 - **US-003**: 社員として、休憩開始・終了ボタンを押して休憩時間を記録したい
+- **US-018**: 社員として、月末に勤怠をまとめて提出したい（DRAFT → SUBMITTED）
 
 ## API エンドポイント
 
@@ -22,6 +23,7 @@
 | POST | /api/attendance/clock-out | 退勤打刻 |
 | POST | /api/attendance/break/start | 休憩開始 |
 | POST | /api/attendance/break/end | 休憩終了 |
+| POST | /api/attendance/submit | 月次勤怠提出 |
 
 ## 成果物
 

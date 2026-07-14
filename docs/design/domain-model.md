@@ -98,6 +98,13 @@
 
 開始時刻〜終了時刻のペア。休憩や勤務時間帯の表現に使う。
 
+### FlexTimePolicy（フレックスタイム制度）
+
+- `coreTimeStart`: コアタイム開始（10:00）
+- `coreTimeEnd`: コアタイム終了（15:00）
+- `dailyRequiredHours`: 1日の所定労働時間（7.25時間 = 7時間15分）
+- `getMonthlyRequiredMinutes(businessDays)`: 月の所定労働分数（7.25h × 営業日数）
+
 ## Enum
 
 | Enum | 値 |
@@ -130,8 +137,9 @@ Employee (1) ──── (N) AttendanceRecord (1) ──── (N) BreakRecord
 - `clockOut(employeeId)`: 退勤打刻
 - `startBreak(employeeId)`: 休憩開始
 - `endBreak(employeeId)`: 休憩終了
-- `correctRecord(attendanceRecordId, corrections)`: 打刻修正（承認前は直接、承認後は申請作成）
-- `getMonthlyRecords(employeeId, yearMonth)`: 月別勤怠取得
+- `correctRecord(attendanceRecordId, corrections)`: 打刻修正（出退勤・休憩とも。承認前は直接、承認後は申請作成）
+- `submitMonthly(employeeId, yearMonth)`: 月次勤怠提出（DRAFT → SUBMITTED）
+- `getMonthlyRecords(employeeId, yearMonth, page, size)`: 月別勤怠取得（ページネーション）
 - `getDailyRecord(employeeId, date)`: 日別勤怠取得
 
 ### ApprovalService

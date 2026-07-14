@@ -193,6 +193,18 @@ paths:
             type: string
             example: '2026-07'
           description: 対象年月（YYYY-MM）
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: ページ番号（0始まり）
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 31
+          description: 1ページあたりの件数
       responses:
         '200':
           description: 月別勤怠一覧
@@ -200,6 +212,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MonthlyAttendanceResponse'
+
+  /attendance/submit:
+    post:
+      tags: [attendance]
+      summary: 月次勤怠提出（DRAFT → SUBMITTED）
+      operationId: submitMonthlyAttendance
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [yearMonth]
+              properties:
+                yearMonth:
+                  type: string
+                  example: '2026-07'
+      responses:
+        '200':
+          description: 提出完了
+        '400':
+          description: 提出できない状態（未打刻日あり等）
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   # === 打刻修正 ===
   /attendance/{id}:
@@ -612,9 +652,22 @@ components:
           type: integer
         requiredMinutes:
           type: integer
+          description: 所定労働分数（7.25h × 営業日数）
         balanceMinutes:
           type: integer
           description: 過不足（正=超過、負=不足）
+        coreTimeStart:
+          type: string
+          example: '10:00'
+        coreTimeEnd:
+          type: string
+          example: '15:00'
+        page:
+          type: integer
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
 
     BreakRecordResponse:
       type: object
