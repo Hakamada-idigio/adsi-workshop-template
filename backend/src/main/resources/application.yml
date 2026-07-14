@@ -21,3 +21,7 @@ server:
   port: 8080
   servlet:
     context-path: ${SERVER_CONTEXT_PATH:/api}
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-ms: 28800000
