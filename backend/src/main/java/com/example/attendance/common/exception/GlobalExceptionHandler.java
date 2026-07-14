@@ -22,6 +22,14 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.of("BAD_REQUEST", ex.getMessage()));
     }
 
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorResponse> handleForbiddenException(ForbiddenException ex) {
+        log.warn("Forbidden: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(ErrorResponse.of("FORBIDDEN", ex.getMessage()));
+    }
+
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ErrorResponse> handleConflictException(ConflictException ex) {
         log.warn("Conflict: {}", ex.getMessage());
